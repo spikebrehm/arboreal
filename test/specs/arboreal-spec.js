@@ -167,4 +167,35 @@ describe("Arboreal", function () {
     expect(tree.path("/3").id).toBe("0/3");
     expect(tree.path("0/1").id).toBe("0/0/1");
   });
+
+  it("#serialize", function() {
+    var tree, serialized, rawTree, deeplySerialized;
+
+    rawTree = {
+      attr1: 'foo/0',
+      attr2: 'bar/0',
+      children: [{
+        attr1: 'foo/0/0',
+        attr2: 'bar/0/0'
+      }, {
+        attr1: 'foo/0/1',
+        attr2: 'bar/0/1',
+        children: [{
+          attr1: 'foo/0/1/0',
+          attr2: 'bar/0/1/0'
+        }, {
+          attr1: 'foo/0/1/1',
+          attr2: 'bar/0/1/1'
+        }]
+      }]
+    };
+
+    tree = Arboreal.parse(rawTree, 'children');
+
+    serialized = tree.serialize({childrenAttr: 'children'});
+    deeplySerialized = Arboreal.parse(Arboreal.parse(rawTree, 'children').serialize({childrenAttr: 'children'}), 'children').serialize({childrenAttr: 'children'});
+
+    expect(JSON.stringify(serialized)).toEqual(JSON.stringify(rawTree));
+    expect(JSON.stringify(deeplySerialized)).toEqual(JSON.stringify(rawTree));
+  });
 });
