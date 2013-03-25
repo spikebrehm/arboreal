@@ -1,3 +1,5 @@
+/*global jasmine, describe, it, expect, Arboreal*/
+
 if (typeof require !== 'undefined') {
   util = require("util");
   Arboreal = require('../../lib/arboreal');
@@ -159,12 +161,9 @@ describe("Arboreal", function () {
   });
 
   it("#path", function () {
-    var tree = new Arboreal(),
-        treeArry;
+    var tree = new Arboreal();
 
     appendSomeChildren(tree);
-    treeArray = tree.toArray();
-    lastNode = treeArray[treeArray.length -1 ];
 
     //should automatically strip out the '/' prefix
     expect(tree.path("/3").id).toBe("0/3");
